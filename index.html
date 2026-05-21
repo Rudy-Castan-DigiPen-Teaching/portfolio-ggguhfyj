@@ -1,95 +1,74 @@
-<!-- https://youtu.be/_xkSvufmjEs?si=mh-MXT2ZdUasYAYn&t=3416 -->
-<!-- adobe.ly/2GAgF93 -->
-<!-- https://scrimba.com/build-and-deploy-your-portfolio-c012 -->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" type="image/svg+xml" href="../img/face.jpg">
-
-    <!-- Help auto scale for desktop & mobile -->
+    <link rel="icon" type="image/jpeg" href="img/to%20the%20side.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>STUDENT TODO Website</title>
+    <title>Junseok | Graphics Programmer</title>
 
-    <!-- Normalize the difference across browsers  https://necolas.github.io/normalize.css/ -->
     <link rel="stylesheet" href="external/normalize.css" />
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
         integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
-
-    <!-- https://fonts.google.com/selection/embed -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
         href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap"
         rel="stylesheet" />
-
     <link rel="stylesheet" href="css/style.css" />
 </head>
 
 <body>
     <header>
         <div class="logo">
-            <!-- alt text can be blank since the logo is purely decorative and putting something like logo isn't actually helpful -->
-            <img src="img/cout.jpg" alt="">
+            <img src="img/replacement%20cout.png" alt="Junseok">
         </div>
         <button class="nav-toggle" aria-label="toggle navigation">
             <span class="hamburger"></span>
         </button>
         <nav class="nav">
             <ul class="nav__list">
-                <li class="nav__item"> <a href="#home" class="nav__link">Home</a> </li>
-                <li class="nav__item"> <a href="#skills" class="nav__link">Skills</a> </li>
-                <li class="nav__item"> <a href="#about" class="nav__link">About Me</a> </li>
-                <li class="nav__item"> <a href="#projects" class="nav__link">Projects</a> </li>
-                <li class="nav__item"> <a href="#resume" class="nav__link">Resume</a> </li>
+                <li class="nav__item"><a href="#home" class="nav__link">Home</a></li>
+                <li class="nav__item"><a href="#skills" class="nav__link">Skills</a></li>
+                <li class="nav__item"><a href="#about" class="nav__link">About Me</a></li>
+                <li class="nav__item"><a href="#projects" class="nav__link">Projects</a></li>
+                <li class="nav__item"><a href="#resume" class="nav__link">Resume</a></li>
             </ul>
         </nav>
     </header>
 
-    <!-- Introduction -->
-
-    <section class="intro" id="#home">
-        <!-- TODO put in a mouse based interactive shader visualization page-->
-        <!-- <div class="intro-bg">
-            <iframe src="webgl/for_fun.html"></iframe>
-        </div> -->
+    <section class="intro" id="home">
         <h1 class="section__title section__title--intro">
-            Hi, I am <strong>TODO TODO</strong>
+            Hi, I am <strong>Junseok</strong>
         </h1>
-        <p class="section__subtitle section__subtitle--intro">Game Programmer/Designer/Developer/Player/TODO/TODO</p>
-        <img src="img/face.jpg" alt="a picture of TODO TODO smiling" class="intro__img" />
+        <p class="section__subtitle section__subtitle--intro">Graphics Programmer</p>
+        <img src="img/to%20the%20side.jpg" alt="Junseok smiling" class="intro__img" />
     </section>
 
-    <!-- My Services -->
     <section class="my-services" id="skills">
-        <h2 class="section__title section__title--services">SKLILZ</h2>
+        <h2 class="section__title section__title--services">Skills</h2>
         <div class="services">
             <div class="service">
-                <h3>SKILL TODO</h3>
-                <p> TODO
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                    aliquip ex ea commodo consequat.
+                <h3>Real-Time Graphics</h3>
+                <p>
+                    Building graphics demos with shader parameters, camera controls, and clear visual
+                    comparisons for rendering techniques such as fog, toon shading, and shadows.
                 </p>
             </div>
 
             <div class="service">
-                <h3>SKILL TODO</h3>
-                <p> TODO
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                    aliquip ex ea commodo consequat.
+                <h3>Procedural Modeling</h3>
+                <p>
+                    Generating mesh data for planes, cubes, spheres, tori, cylinders, and cones while keeping vertex
+                    layout, normals, UVs, and index buffers organized for reusable rendering.
                 </p>
             </div>
 
             <div class="service">
-                <h3>SKILL TODO</h3>
-                <p> TODO
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                    aliquip ex ea commodo consequat.
+                <h3>Tools & Debugging</h3>
+                <p>
+                    Comfortable working in C++, OpenGL, JavaScript, HTML, and CSS, with attention to debugging render
+                    state, documenting work, and presenting technical projects clearly.
                 </p>
             </div>
         </div>
@@ -97,142 +76,144 @@
         <a href="#projects" class="btn">Projects</a>
     </section>
 
-    <!-- About Me -->
     <section class="about-me" id="about">
-        <h2 class="section__title section__title--about">Who I am</h2>
+        <h2 class="section__title section__title--about">Who I Am</h2>
         <p class="section__subtitle section__subtitle--about">
-            Student Game Programmer TODO TODO
+            DigiPen student focused on real-time interactive simulation
         </p>
 
         <div class="about-me__body">
             <p>
-                TODO Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                aliquip ex ea commodo consequat.
+                I am a student developer interested in the technical side of games: rendering, engine systems, and the
+                small details that make interactive scenes feel responsive. This portfolio collects my CS250 graphics
+                work and tracks each topic as it becomes part of the course portfolio.
             </p>
             <p>
-                TODO Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                aliquip ex ea commodo consequat.
+                My goal is to become a graphics or gameplay programmer who can explain complex visual systems, build
+                practical tools around them, and keep the player-facing result readable and polished.
             </p>
         </div>
-        <img src="img/tall.jpg" alt="picture of TODO TODO" class="about-me__img" />
+        <img src="img/to%20the%20side.jpg" alt="Junseok portrait" class="about-me__img" />
     </section>
 
-    <!-- My Portfolio -->
     <section class="my-projects" id="projects">
-        <h2 class="section__title section__title--projects">My Projects</h2>
+        <h2 class="section__title section__title--projects">CS250 Projects</h2>
         <p class="section__subtitle section__subtitle--projects">
-            A selection of my range of projects
+            Graphics demos for course topics
         </p>
         <div class="portfolio">
             <a href="portfolio/01_hello.html" class="portfolio__item">
-                <img src="img/portfolio_thumbnails/01_hello.jpg" alt="" class="portfolio__img" />
+                <img src="img/portfolio_thumbnails/01_hello.jpg" alt="Hello Quad project thumbnail"
+                    class="portfolio__img" />
+                <span class="portfolio__caption">Hello Quad</span>
             </a>
             <a href="portfolio/02_meshes.html" class="portfolio__item">
-                <img src="img/portfolio_thumbnails/02_meshes.jpg" alt="" class="portfolio__img" />
+                <img src="img/portfolio_thumbnails/02_meshes.jpg" alt="Procedural mesh project thumbnail"
+                    class="portfolio__img" />
+                <span class="portfolio__caption">Procedural Meshes</span>
             </a>
             <a href="portfolio/03_fog.html" class="portfolio__item">
-                <img src="img/portfolio_thumbnails/03_fog.jpg" alt="" class="portfolio__img" />
+                <img src="img/portfolio_thumbnails/03_fog.jpg" alt="Fog project thumbnail" class="portfolio__img" />
+                <span class="portfolio__caption">Fog</span>
             </a>
             <a href="portfolio/04_toon.html" class="portfolio__item">
-                <img src="img/portfolio_thumbnails/04_toon.jpg" alt="" class="portfolio__img" />
+                <img src="img/portfolio_thumbnails/04_toon.jpg" alt="Toon shading project thumbnail"
+                    class="portfolio__img" />
+                <span class="portfolio__caption">Toon Shading</span>
             </a>
             <a href="portfolio/05_shadow.html" class="portfolio__item">
-                <img src="img/portfolio_thumbnails/05_shadow.jpg" alt="" class="portfolio__img" />
+                <img src="img/portfolio_thumbnails/05_shadow.jpg" alt="Shadow mapping project thumbnail"
+                    class="portfolio__img" />
+                <span class="portfolio__caption">Shadow Mapping</span>
             </a>
             <a href="portfolio/06_value.html" class="portfolio__item">
-                <img src="img/portfolio_thumbnails/06_value.jpg" alt="" class="portfolio__img" />
+                <img src="img/portfolio_thumbnails/06_value.jpg" alt="Value noise project thumbnail"
+                    class="portfolio__img" />
+                <span class="portfolio__caption">Value Noise</span>
             </a>
             <a href="portfolio/07_gradient.html" class="portfolio__item">
-                <img src="img/portfolio_thumbnails/07_gradient.jpg" alt="" class="portfolio__img" />
+                <img src="img/portfolio_thumbnails/07_gradient.jpg" alt="Gradient noise project thumbnail"
+                    class="portfolio__img" />
+                <span class="portfolio__caption">Gradient Noise</span>
             </a>
-
         </div>
     </section>
 
-    <!-- Resume Section -->
     <section class="my-resume" id="resume">
         <h2 class="section__title section__title--resume">Resume</h2>
-        <a target="_blank" href="docs/Resume.pdf"><i class="far fa-file-pdf"></i> PDF</a>
+        <p class="resume-download">
+            <a class="btn" target="_blank" href="docs/Resume.pdf"><i class="far fa-file-pdf"></i> Download PDF</a>
+        </p>
 
         <div class="resume-section">
             <h3>Experience</h3>
             <div class="resume-item">
                 <p>
-                    <b>Title, Company</b></br>
-                    Month Year - Present</br>
-                    <em>City, State, Country</em></br>
-                    What you did, how you did it, result. Quantify your achievement(s) try to have at least one like
-                    this. Look at the example below.
+                    <b>Student Graphics Programmer</b><br>
+                    2026 - Present<br>
+                    <em>DigiPen Institute of Technology</em><br>
+                    Developing a portfolio of real-time graphics demos with OpenGL output, interactive
+                    parameters, and documentation for each rendering technique.
                 </p>
             </div>
-            <div class="resume-item">
-                <p>
-                    <b>Software Test Engineer Intern, Qualtrics</b></br>
-                    Month Year - Month Year </br>
-                    <em>Seattle, WA</em></br>
-                    Implemented an extensible script in Python to automate project creation with static data on tests to
-                    improve pass rates and duration, ultimately speeding up software releases. Improved test times
-                    across 3 teams by nearly 400% with more stability. Reviewed design docs and prototypes of an
-                    upcoming feature release to create nearly 50 test cases. Performed manual testing and triaged 15
-                    bugs with engineers.
-                </p>
-            </div>
+
             <h3>Projects</h3>
             <div class="resume-item">
                 <p>
-                    <b>Role, Name of Project</b></br>
-                    Month Year - Month Year</br>
-                    <em>Redmond, WA</em></br>
-                    Type of game, (2D Platformer, FPS) and describe its genre (Horror, Adventure, etc.).
-                    Collaborated with a team of x and developed a ...
-                    Designed most of the front end & debugged PHP.
-                    Awarded the Most Creative Award by Appian and Best Innovation in Collaboration Award by Red
-                    Ventures.
+                    <b>CS250 Graphics Portfolio</b><br>
+                    2026<br>
+                    <em>HTML, CSS, JavaScript, C++, OpenGL</em><br>
+                    Built a public portfolio website for graphics assignments, including dedicated project pages,
+                    screenshots, and a downloadable technical resume.
+                </p>
+            </div>
+            <div class="resume-item">
+                <p>
+                    <b>Procedural Rendering Demos</b><br>
+                    2026<br>
+                    <em>Real-time interactive simulation coursework</em><br>
+                    Implementing geometry generation, fog equations, toon lighting, directional shadow mapping, and
+                    noise-based texture and mesh experiments.
                 </p>
             </div>
 
             <h3>Leadership Experience</h3>
             <div class="resume-item">
                 <p>
-                    <b>Role, DigiPen Institute of Technology</b></br>
-                    Month Year - Month Year</br>
-                    <em>Redmond, WA</em></br>
-                    A lot of you do many things on campus.
-                    For example, did you manage/host a game jam?
-                    Brainstorm initiatives you have worked on.
+                    <b>Technical Collaborator</b><br>
+                    2026 - Present<br>
+                    <em>DigiPen coursework and team projects</em><br>
+                    Contribute to project planning, peer review, debugging, and clear communication of implementation
+                    choices during graphics and programming assignments.
                 </p>
             </div>
 
             <h3>Education</h3>
             <div class="resume-item">
                 <p>
-                    <b>Bachelor of Science in Computer Science in Real-Time Interactive Simulation</b></br>
-                    Year-Year</br>
-                    <em>Daegu, Korea & Redmond, WA, USA</em></br>
-                    Relevant Courses: Name the courses that would draw attention, significant, relevant to the job.
+                    <b>Bachelor of Science in Computer Science in Real-Time Interactive Simulation</b><br>
+                    2026 - Present<br>
+                    <em>Daegu, Korea and Redmond, WA, USA</em><br>
+                    Relevant coursework: CS250 Computer Graphics, real-time rendering, mathematics for games, data
+                    structures, and C/C++ programming.
                 </p>
             </div>
         </div>
     </section>
-    <!-- /Resume Section -->
 
-    <!-- Footer -->
     <footer class="footer">
-        <a href="mailto:my.email@digipen.edu" class="footer__link">my.email@digipen.edu</a>
+        <a href="mailto:junseok@digipen.edu" class="footer__link">junseok@digipen.edu</a>
         <ul class="social-list">
             <li class="social-list__item">
-                <a class="social-list__link" href="https://linkedin.com/in/mylinkedinid">
+                <a class="social-list__link" href="https://linkedin.com/in/junseok" aria-label="LinkedIn profile">
                     <i class="fab fa-linkedin"></i>
                 </a>
             </li>
             <li class="social-list__item">
-                <a class="social-list__link" href="https://github.com/mygithubid">
+                <a class="social-list__link" href="https://github.com/junseok" aria-label="GitHub profile">
                     <i class="fab fa-github"></i>
                 </a>
             </li>
-            <!-- Want to list more? search : https://fontawesome.com/v5/search?ic=brands -->
         </ul>
     </footer>
 
