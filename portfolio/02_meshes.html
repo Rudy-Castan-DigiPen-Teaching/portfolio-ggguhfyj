@@ -1,77 +1,39 @@
-<!DOCTYPE html>
+<!--
+  author JUNSEOK LEE
+  date 2025 Spring
+  CS250 Computer Graphics II
+  copyright DigiPen Institute of Technology
+-->
+<!doctype html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <link rel="icon" type="image/jpeg" href="../img/to%20the%20side.jpg">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Procedural Meshes | Junseok</title>
-    <link rel="stylesheet" href="../external/normalize.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
-        integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="../css/style.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Procedural Meshes Demo</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --paper: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--paper);
+        }
+
+        .demo-frame {
+            width: 100%;
+            height: 100vh;
+            border: 0;
+            display: block;
+        }
+    </style>
 </head>
-
 <body>
-    <header>
-        <div class="logo"><img src="../img/replacement%20cout.png" alt="Junseok"></div>
-        <button class="nav-toggle" aria-label="toggle navigation"><span class="hamburger"></span></button>
-        <nav class="nav">
-            <ul class="nav__list">
-                <li class="nav__item"><a href="../index.html" class="nav__link">Home</a></li>
-                <li class="nav__item"><a href="../index.html#skills" class="nav__link">Skills</a></li>
-                <li class="nav__item"><a href="../index.html#about" class="nav__link">About Me</a></li>
-                <li class="nav__item"><a href="../index.html#projects" class="nav__link">Projects</a></li>
-                <li class="nav__item"><a href="../index.html#resume" class="nav__link">Resume</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <section class="intro">
-        <h1 class="section__title section__title--intro">Project <strong>Procedural Meshes</strong></h1>
-        <p class="section__subtitle section__subtitle--intro">Geometry Generation</p>
-        <img src="../img/portfolio_thumbnails/02_meshes.jpg" alt="Procedural meshes project thumbnail"
-            class="intro__img">
-    </section>
-
-    <div class="portfolio-item-individual">
-        <h2>Project Overview</h2>
-        <p>This assignment focuses on procedural geometric modeling for planes, cubes, spheres, tori, cylinders, and
-            cones. The goal is to generate reusable mesh data instead of relying on imported models.</p>
-
-        <h2>Planned Parameters</h2>
-        <ul>
-            <li>Shape selection for each primitive type.</li>
-            <li>Segment, ring, radius, height, and subdivision controls where appropriate.</li>
-            <li>Normal, UV, and wireframe visualization toggles for debugging generated geometry.</li>
-        </ul>
-
-        <h2>Reflection</h2>
-        <p>Procedural meshes are a useful test bed because they make data layout mistakes visible immediately. This page
-            will document the mesh generation choices and screenshots as the assignment progresses.</p>
-    </div>
-
-    <div class="portfolio-item-individual">
-        <h2>Demo</h2>
-        <div class="demo-empty"></div>
-    </div>
-
-    <footer class="footer">
-        <a href="mailto:junseok@digipen.edu" class="footer__link">junseok@digipen.edu</a>
-        <ul class="social-list">
-            <li class="social-list__item"><a class="social-list__link" href="https://linkedin.com/in/junseok"
-                    aria-label="LinkedIn profile"><i class="fab fa-linkedin"></i></a></li>
-            <li class="social-list__item"><a class="social-list__link" href="https://github.com/junseok"
-                    aria-label="GitHub profile"><i class="fab fa-github"></i></a></li>
-        </ul>
-    </footer>
-
-    <script src="../js/index.js"></script>
+    <iframe class="demo-frame" src="web-release/graphics_fun.html" title="Procedural Meshes Demo"></iframe>
 </body>
-
 </html>
