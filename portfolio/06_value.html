@@ -1,3 +1,9 @@
+<!--
+  author Junseok Lee
+  date 2025 Spring
+  CS250 Computer Graphics II
+  copyright DigiPen Institute of Technology
+-->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,6 +11,7 @@
     <meta charset="UTF-8">
     <link rel="icon" type="image/jpeg" href="../img/to%20the%20side.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Junseok Lee">
     <title>Value Noise | Junseok</title>
     <link rel="stylesheet" href="../external/normalize.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
@@ -34,30 +41,38 @@
 
     <section class="intro">
         <h1 class="section__title section__title--intro">Project <strong>Value Noise</strong></h1>
-        <p class="section__subtitle section__subtitle--intro">Procedural Textures</p>
+        <p class="section__subtitle section__subtitle--intro">Procedural Texture Generation</p>
         <img src="../img/portfolio_thumbnails/06_value.jpg" alt="Value noise project thumbnail" class="intro__img">
     </section>
 
     <div class="portfolio-item-individual">
         <h2>Project Overview</h2>
-        <p>This page is prepared for the value noise assignment. The final entry will show how random lattice values can
-            be interpolated into procedural textures and height fields.</p>
+        <p>Value Noise generates procedural texture data by assigning random values to a repeating lattice, hashing
+            input coordinates into that lattice, and interpolating between neighboring samples. This demo supports 1D,
+            2D, and 3D noise with adjustable period dimensions and smoothing methods.</p>
 
-        <h2>Planned Parameters</h2>
+        <h2>Tasks Completed</h2>
         <ul>
-            <li>Frequency, amplitude, octave, and persistence controls.</li>
-            <li>Texture preview and mesh displacement modes.</li>
-            <li>Seed control for comparing repeatable noise patterns.</li>
+            <li>Implemented repeatable permutation hashing for wrapped noise coordinates.</li>
+            <li>Built linear, bilinear, and trilinear interpolation for templated value types.</li>
+            <li>Added linear, cosine, smoothstep, and quintic fade controls.</li>
+            <li>Implemented a templated ValueNoise class with editable random values and period resizing.</li>
+            <li>Uploaded generated RGBA data into OpenGL/WebGL textures for live display.</li>
+            <li>Built the Emscripten release and embedded the interactive web demo below.</li>
         </ul>
 
         <h2>Reflection</h2>
-        <p>Noise topics connect shader math to content creation. This page will track how parameter changes affect the
-            texture result and the generated mesh shape.</p>
+        <p>The most useful part of this project was seeing how small interpolation choices change the final texture.
+            Linear smoothing makes the lattice visible, while quintic smoothing produces softer transitions that work
+            better for marble, wood, turbulence, and fractal sum patterns.</p>
     </div>
 
     <div class="portfolio-item-individual">
-        <h2>Demo</h2>
-        <div class="demo-empty"></div>
+        <h2>Live Demo</h2>
+        <div class="demo-shell">
+            <iframe class="embedded-demo" src="web-release/graphics_fun.html?start=valuenoise"
+                title="Value Noise Demo"></iframe>
+        </div>
     </div>
 
     <footer class="footer">
