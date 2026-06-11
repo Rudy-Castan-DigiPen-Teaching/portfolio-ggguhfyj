@@ -8,10 +8,38 @@
  */
 #include "Texture.hpp"
 
+#include "Environment.hpp"
 #include "GL.hpp"
 #include "assets/Path.hpp"
 #include <GL/glew.h>
 #include <stb_image.h>
+
+namespace
+{
+    GLenum external_format(opengl::Texture::ColorFormat format) noexcept
+    {
+        switch (format)
+        {
+            case opengl::Texture::R32F: return GL_RED;
+            case opengl::Texture::RGBA8:
+            case opengl::Texture::RGBA32F: return GL_RGBA;
+            case opengl::Texture::None: break;
+        }
+        return GL_RGBA;
+    }
+
+    GLenum external_type(opengl::Texture::ColorFormat format) noexcept
+    {
+        switch (format)
+        {
+            case opengl::Texture::RGBA32F:
+            case opengl::Texture::R32F: return GL_FLOAT;
+            case opengl::Texture::RGBA8:
+            case opengl::Texture::None: break;
+        }
+        return GL_UNSIGNED_BYTE;
+    }
+}
 
 namespace opengl
 {
@@ -21,11 +49,12 @@ namespace opengl
         delete_texture();
     }
 
-    Texture::Texture(Texture&& other) noexcept : texture_handle(other.texture_handle), width(other.width), height(other.height)
+    Texture::Texture(Texture&& other) noexcept : texture_handle(other.texture_handle), width(other.width), height(other.height), color_format(other.color_format)
     {
         other.texture_handle = 0;
         other.width          = 0;
         other.height         = 0;
+        other.color_format   = ColorFormat::None;
     }
 
     Texture& Texture::operator=(Texture&& other) noexcept
@@ -33,6 +62,7 @@ namespace opengl
         std::swap(texture_handle, other.texture_handle);
         std::swap(width, other.width);
         std::swap(height, other.height);
+        std::swap(color_format, other.color_format);
         return *this;
     }
 
@@ -70,6 +100,7 @@ namespace opengl
 
         width  = image_width;
         height = image_height;
+        color_format = ColorFormat::RGBA8;
 
         GL::GenTextures(1, &texture_handle);
         GL::BindTexture(GL_TEXTURE_2D, texture_handle);
@@ -77,7 +108,7 @@ namespace opengl
         GL::TexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, static_cast<GLint>(filtering));
         GL::TexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, static_cast<GLint>(wrapping[S]));
         GL::TexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, static_cast<GLint>(wrapping[T]));
-        GL::TexImage2D(GL_TEXTURE_2D, 0, static_cast<GLint>(GL_RGBA), width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, colors);
+        GL::TexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, colors);
         GL::BindTexture(GL_TEXTURE_2D, 0);
 
         return true;
@@ -85,14 +116,20 @@ namespace opengl
 
     bool Texture::LoadAsRGBA(int image_width, int image_height) noexcept
     {
+        return LoadAsFormat(image_width, image_height, ColorFormat::RGBA8);
+    }
+
+    bool Texture::LoadAsFormat(int image_width, int image_height, ColorFormat format) noexcept
+    {
         delete_texture();
-        if (image_width <= 0 || image_height <= 0)
+        if (image_width <= 0 || image_height <= 0 || format == ColorFormat::None)
         {
             return false;
         }
 
-        width  = image_width;
-        height = image_height;
+        width        = image_width;
+        height       = image_height;
+        color_format = format;
 
         GL::GenTextures(1, &texture_handle);
         GL::BindTexture(GL_TEXTURE_2D, texture_handle);
@@ -100,7 +137,14 @@ namespace opengl
         GL::TexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, static_cast<GLint>(filtering));
         GL::TexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, static_cast<GLint>(wrapping[S]));
         GL::TexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, static_cast<GLint>(wrapping[T]));
-        GL::TexImage2D(GL_TEXTURE_2D, 0, static_cast<GLint>(GL_RGBA), width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+        if (opengl::HasTextureStorage)
+        {
+            GL::TexStorage2D(GL_TEXTURE_2D, 1, static_cast<GLenum>(format), width, height);
+        }
+        else
+        {
+            GL::TexImage2D(GL_TEXTURE_2D, 0, static_cast<GLint>(format), width, height, 0, external_format(format), external_type(format), nullptr);
+        }
         GL::BindTexture(GL_TEXTURE_2D, 0);
 
         return true;
@@ -179,5 +223,6 @@ namespace opengl
         texture_handle = 0;
         width          = 0;
         height         = 0;
+        color_format   = ColorFormat::None;
     }
 }

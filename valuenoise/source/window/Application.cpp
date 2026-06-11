@@ -19,6 +19,9 @@
 #include "util/Logger.hpp"
 #include <GL/glew.h>
 #include <SDL.h>
+#if defined(__EMSCRIPTEN__)
+#    include <emscripten/html5.h>
+#endif
 #include <imgui.h>
 #include <sstream>
 
@@ -290,6 +293,12 @@ namespace window
             throw_error_message("Unable to initialize GLEW - error: ", glewGetErrorString(result));
         }
 
+#if defined(__EMSCRIPTEN__)
+        const auto webgl_context = emscripten_webgl_get_current_context();
+        emscripten_webgl_enable_extension(webgl_context, "EXT_color_buffer_float");
+        emscripten_webgl_enable_extension(webgl_context, "OES_texture_float_linear");
+#endif
+
         // https://wiki.libsdl.org/SDL_GL_SetSwapInterval
         constexpr int ADAPTIVE_VSYNC = -1;
         constexpr int VSYNC          = 1;
@@ -317,6 +326,7 @@ namespace window
             opengl::MajorVersion = major;
             opengl::MinorVersion = minor;
         }
+        opengl::HasTextureStorage = opengl::IsWebGL || opengl::current_version() >= opengl::version(4, 2) || GLEW_ARB_texture_storage;
         GL::GetIntegerv(GL_MAX_ELEMENTS_VERTICES, &opengl::MaxElementVertices);
         GL::GetIntegerv(GL_MAX_ELEMENTS_INDICES, &opengl::MaxElementIndices);
         GL::GetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &opengl::MaxTextureImageUnits);

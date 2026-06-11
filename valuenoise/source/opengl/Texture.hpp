@@ -36,6 +36,16 @@ namespace opengl
         [[nodiscard]] bool LoadAsRGBA(int image_width, int image_height) noexcept;
         void               UploadAsRGBA(const RGBA* colors) noexcept;
 
+        enum ColorFormat : GLenum
+        {
+            None    = 0,
+            RGBA8   = GL_RGBA8,
+            RGBA32F = GL_RGBA32F,
+            R32F    = GL_R32F,
+        };
+
+        [[nodiscard]] bool LoadAsFormat(int image_width, int image_height, ColorFormat format) noexcept;
+
         void UseForSlot(unsigned int texture_unit) const noexcept;
 
         [[nodiscard]] Handle GetHandle() const noexcept
@@ -96,6 +106,7 @@ namespace opengl
         Handle                  texture_handle = 0;
         int                     width          = 0;
         int                     height         = 0;
+        ColorFormat             color_format   = ColorFormat::None;
         Filtering               filtering      = Filtering::NearestPixel;
         std::array<Wrapping, 2> wrapping       = { Wrapping::Repeat, Wrapping::Repeat };
     };

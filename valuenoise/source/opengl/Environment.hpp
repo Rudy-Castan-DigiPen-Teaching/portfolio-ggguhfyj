@@ -15,6 +15,7 @@ namespace opengl
     inline int MaxElementIndices    = 0;
     inline int MaxTextureImageUnits = 2;
     inline int MaxTextureSize       = 64;
+    inline bool HasTextureStorage   = false;
 
     constexpr int version(int major, int minor) noexcept
     {

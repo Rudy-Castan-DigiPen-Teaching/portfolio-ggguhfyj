@@ -11,6 +11,7 @@
 #include "D01HelloQuad.hpp"
 #include "D02ProceduralMeshes.hpp"
 #include "D06ValueNoise.hpp"
+#include "D07GradientNoise.hpp"
 #include "util/Logger.hpp"
 
 
@@ -37,6 +38,7 @@ namespace
         DemoMetaData{        Demos::HelloQuad,        "Hello Quad",            "hello",        []() -> gsl::owner<IDemo*> { return new D01HelloQuad(); } },
         DemoMetaData{ Demos::ProceduralMeshes, "Procedural Meshes", "proceduralmeshes", []() -> gsl::owner<IDemo*> { return new D02ProceduralMeshes(); } },
         DemoMetaData{       Demos::ValueNoise,       "Value Noise",       "valuenoise",       []() -> gsl::owner<IDemo*> { return new D06ValueNoise(); } },
+        DemoMetaData{    Demos::GradientNoise,    "Gradient Noise",    "gradientnoise",    []() -> gsl::owner<IDemo*> { return new D07GradientNoise(); } },
     };
 
     std::string to_lower_and_remove_whitespace(std::string_view s)

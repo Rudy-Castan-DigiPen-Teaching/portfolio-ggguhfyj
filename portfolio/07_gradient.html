@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <link rel="icon" type="image/jpeg" href="../img/to%20the%20side.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Junseok Lee">
     <title>Gradient Noise | Junseok</title>
     <link rel="stylesheet" href="../external/normalize.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
@@ -41,24 +42,33 @@
 
     <div class="portfolio-item-individual">
         <h2>Project Overview</h2>
-        <p>This page is prepared for the gradient noise assignment. The final entry will compare value noise with
-            gradient-based noise and show how smoother directional changes improve procedural patterns.</p>
+        <p>Gradient Noise generates seamless procedural textures from lattice gradients instead of raw random values.
+            This demo renders an improved Perlin-style 3D noise slice into an offscreen floating-point texture, then
+            reuses that texture for both a flat preview and a displaced surface view.</p>
 
-        <h2>Planned Parameters</h2>
+        <h2>Tasks Completed</h2>
         <ul>
-            <li>Frequency, octave, persistence, and lacunarity controls.</li>
-            <li>Gradient visualization and texture preview modes.</li>
-            <li>Mesh displacement controls for terrain-like experiments.</li>
+            <li>Added the Gradient Noise demo to the shared CS250 demo factory and CMake build.</li>
+            <li>Extended texture loading with RGBA8, RGBA32F, and R32F allocation formats.</li>
+            <li>Added framebuffer support for rendering generated noise into a repeat-wrapped R32F texture.</li>
+            <li>Implemented improved 3D gradient noise in GLSL with quintic fading and fixed gradient directions.</li>
+            <li>Added gradient, fractal sum, turbulence, marble, and wood pattern modes.</li>
+            <li>Built texture and surface shaders so the same generated noise can be inspected as a 2D texture or as
+                displaced terrain.</li>
         </ul>
 
         <h2>Reflection</h2>
-        <p>Gradient noise is useful for natural-looking procedural content. This page will document the implementation
-            choices and how they affect texture continuity.</p>
+        <p>The biggest difference from value noise is that the random data now influences direction instead of direct
+            color. That makes the transitions smoother and gives the higher-level patterns more natural motion when
+            changing the Z slice or tiling scale.</p>
     </div>
 
     <div class="portfolio-item-individual">
-        <h2>Demo</h2>
-        <div class="demo-empty"></div>
+        <h2>Live Demo</h2>
+        <div class="demo-shell">
+            <iframe class="embedded-demo" src="web-release/graphics_fun.html?start=gradientnoise"
+                title="Gradient Noise Demo"></iframe>
+        </div>
     </div>
 
     <footer class="footer">

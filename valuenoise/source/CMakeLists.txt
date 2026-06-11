@@ -14,9 +14,11 @@ set(SOURCE_CODE
     demos/D01HelloQuad.hpp demos/D01HelloQuad.cpp
     demos/D02ProceduralMeshes.hpp demos/D02ProceduralMeshes.cpp
     demos/D06ValueNoise.hpp demos/D06ValueNoise.cpp
+    demos/D07GradientNoise.hpp demos/D07GradientNoise.cpp
     demos/DemosFactory.hpp demos/DemosFactory.cpp
     demos/IDemo.hpp
 
+    graphics/Camera.hpp graphics/Camera.cpp
     graphics/Material.hpp graphics/Material.cpp
     graphics/Mesh.hpp graphics/Mesh.cpp
     graphics/noise/Fade.hpp
@@ -27,6 +29,7 @@ set(SOURCE_CODE
     graphics/noise/ValueNoise.hpp
 
     opengl/Environment.hpp
+    opengl/FrameBuffer.hpp opengl/FrameBuffer.cpp
     opengl/GL.hpp opengl/GL.cpp
     opengl/Handle.hpp
     opengl/IndexBuffer.hpp opengl/IndexBuffer.cpp
