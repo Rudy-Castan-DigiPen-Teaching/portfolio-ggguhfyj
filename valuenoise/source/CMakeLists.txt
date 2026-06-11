@@ -70,6 +70,7 @@ target_compile_definitions(graphics_fun PRIVATE $<$<BOOL:${IS_DEVELOPER_VERSION}
 if(EMSCRIPTEN)
 
     set_target_properties(graphics_fun PROPERTIES SUFFIX ".html")
+    target_compile_options(graphics_fun PRIVATE -fexceptions -sDISABLE_EXCEPTION_CATCHING=0)
 
     # https://emscripten.org/docs/tools_reference/settings_reference.html
     # ASSERTIONS=1                  - we want asserts to work

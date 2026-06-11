@@ -182,7 +182,7 @@ PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbDpzcGFjZT0icHJlc2VydmUi
             let reason = JSON.stringify(event);
             console.log("onerror: " + reason);
             document.getElementById('container_status').innerHTML = reason;
-            document.getElementById('container_status').innerHTML += '<br>This browser is not supported. Please try a different browser';
+            document.getElementById('container_status').innerHTML += '<br>The web demo failed to initialize. Check the console for the shader or runtime error.';
             document.getElementById('container_status').style.color = "#ff0000";
         };
     </script>

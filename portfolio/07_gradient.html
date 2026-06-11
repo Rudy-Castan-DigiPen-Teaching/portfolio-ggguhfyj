@@ -1,87 +1,761 @@
-<!DOCTYPE html>
-<html lang="en">
-
+<!--
+  author Rudy Castan
+  date 2025 Spring
+  CS250 Computer Graphics II
+  copyright DigiPen Institute of Technology
+-->
+<!doctype html>
+<html lang="en-us">
 <head>
-    <meta charset="UTF-8">
-    <link rel="icon" type="image/jpeg" href="../img/to%20the%20side.jpg">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="Junseok Lee">
-    <title>Gradient Noise | Junseok</title>
-    <link rel="stylesheet" href="../external/normalize.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
-        integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="../css/style.css">
+    <meta charset="utf-8">
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <title>CS250 Gradient Noise Portfolio</title>
+    <meta content="Gradient Noise portfolio demo for CS250 Computer Graphics II" name="description">
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="no-cache, no-store, must-revalidate" http-equiv="Cache-Control">
+    <meta content="no-cache" http-equiv="Pragma">
+    <meta content="0" http-equiv="Expires">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            overflow: hidden;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            background: #08090b;
+            color: #d9dde3;
+            font: 13px/1.35 Consolas, "Cascadia Mono", "Courier New", monospace;
+        }
+
+        #main-container {
+            width: 100vw;
+            height: 100vh;
+            display: grid;
+            grid-template-rows: 21px 1fr;
+            background: #0b0c0e;
+        }
+
+        .menu-bar {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 0 13px;
+            color: #d5d7db;
+            background: #242529;
+            border-bottom: 1px solid #3b3e45;
+            box-shadow: inset 0 -1px 0 #141518;
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        .app-frame {
+            min-height: 0;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 650px;
+        }
+
+        .viewport {
+            position: relative;
+            min-width: 0;
+            min-height: 0;
+            overflow: hidden;
+            background: #6495ed;
+        }
+
+        canvas.emscripten {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            outline: 0;
+            background: #6495ed;
+        }
+
+        .side {
+            min-width: 0;
+            background: #0d0e10;
+            border-left: 2px solid #222833;
+            overflow: hidden;
+        }
+
+        .imgui-window {
+            color: #d8dce4;
+            background: #101113;
+            border-bottom: 2px solid #263246;
+        }
+
+        .imgui-title {
+            height: 24px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 0 8px;
+            background: #2e5a91;
+            border-top: 1px solid #1b3556;
+            border-bottom: 1px solid #456fa8;
+            color: #e3e9f4;
+        }
+
+        .imgui-title.dark {
+            background: #0e1116;
+            border-color: #22304a;
+        }
+
+        .twisty {
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 8px solid #dce9ff;
+        }
+
+        .title-tab {
+            min-width: 56px;
+            height: 22px;
+            display: inline-flex;
+            align-items: center;
+            padding: 0 8px;
+            background: #174070;
+            border-radius: 4px 4px 0 0;
+        }
+
+        .close {
+            margin-left: auto;
+            font: 20px/1 Arial, sans-serif;
+            color: #d5d9df;
+        }
+
+        .fps-body {
+            height: 151px;
+            padding: 11px;
+            color: #d5d9df;
+        }
+
+        .settings {
+            padding: 10px 10px 18px;
+        }
+
+        .row {
+            height: 28px;
+            display: grid;
+            grid-template-columns: minmax(0, 420px) 1fr;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .value-cell {
+            height: 25px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            color: #d9dde3;
+            background: #1b3354;
+            border: 1px solid #0a111d;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            overflow: hidden;
+        }
+
+        .value-cell.text {
+            padding: 0 8px;
+        }
+
+        .label {
+            color: #e2e2e2;
+            white-space: nowrap;
+        }
+
+        .select-cell select {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .select-cell::after {
+            content: "";
+            position: absolute;
+            right: 6px;
+            top: 5px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 12px solid #dce9ff;
+        }
+
+        .range-cell {
+            justify-content: center;
+        }
+
+        .range-cell input[type="range"] {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 30%;
+            background: rgba(71, 143, 226, 0.18);
+        }
+
+        .thumb {
+            position: absolute;
+            top: 3px;
+            width: 16px;
+            height: 19px;
+            background: #438de3;
+            border: 1px solid #2c75c1;
+        }
+
+        .numeric {
+            position: relative;
+            z-index: 1;
+            color: #cfd4de;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .portfolio-drawer {
+            margin-top: 18px;
+            padding: 10px;
+            color: #b9c0ca;
+            border-top: 1px solid #263246;
+            font-family: "Segoe UI", Arial, sans-serif;
+            line-height: 1.35;
+        }
+
+        .portfolio-drawer h2 {
+            margin: 12px 0 5px;
+            color: #dfe7f5;
+            font-size: 13px;
+            letter-spacing: 0;
+        }
+
+        .portfolio-drawer p,
+        .portfolio-drawer ul {
+            margin: 0;
+            padding-left: 18px;
+            color: #aeb6c3;
+        }
+
+        #description {
+            margin: 10px;
+            padding: 10px;
+            color: #000;
+        }
+
+        @media (max-width: 1050px) {
+            .app-frame {
+                grid-template-columns: 1fr;
+                grid-template-rows: minmax(0, 1fr) 360px;
+            }
+
+            .side {
+                border-left: 0;
+                border-top: 2px solid #222833;
+                overflow: auto;
+            }
+
+            .fps-body {
+                height: 64px;
+            }
+        }
+    </style>
 </head>
-
 <body>
-    <header>
-        <div class="logo"><img src="../img/replacement%20cout.png" alt="Junseok"></div>
-        <button class="nav-toggle" aria-label="toggle navigation"><span class="hamburger"></span></button>
-        <nav class="nav">
-            <ul class="nav__list">
-                <li class="nav__item"><a href="../index.html" class="nav__link">Home</a></li>
-                <li class="nav__item"><a href="../index.html#skills" class="nav__link">Skills</a></li>
-                <li class="nav__item"><a href="../index.html#about" class="nav__link">About Me</a></li>
-                <li class="nav__item"><a href="../index.html#projects" class="nav__link">Projects</a></li>
-                <li class="nav__item"><a href="../index.html#resume" class="nav__link">Resume</a></li>
-            </ul>
-        </nav>
-    </header>
+    <div id="main-container">
+        <div class="menu-bar">
+            <span>Select</span>
+            <span>Demo</span>
+            <span>View</span>
+        </div>
 
-    <section class="intro">
-        <h1 class="section__title section__title--intro">Project <strong>Gradient Noise</strong></h1>
-        <p class="section__subtitle section__subtitle--intro">Perlin-Style Noise</p>
-        <img src="../img/portfolio_thumbnails/07_gradient.jpg" alt="Gradient noise project thumbnail"
-            class="intro__img">
-    </section>
+        <div class="app-frame">
+            <main class="viewport">
+                <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex="-1"></canvas>
+            </main>
 
-    <div class="portfolio-item-individual">
-        <h2>Project Overview</h2>
-        <p>Gradient Noise generates seamless procedural textures from lattice gradients instead of raw random values.
-            This demo renders an improved Perlin-style 3D noise slice into an offscreen floating-point texture, then
-            reuses that texture for both a flat preview and a displaced surface view.</p>
+            <aside class="side">
+                <section class="imgui-window">
+                    <div class="imgui-title dark">
+                        <span class="twisty"></span>
+                        <span class="title-tab">FPS</span>
+                        <span class="close">×</span>
+                    </div>
+                    <div class="fps-body" id="fpsText">169</div>
+                </section>
 
-        <h2>Tasks Completed</h2>
-        <ul>
-            <li>Added the Gradient Noise demo to the shared CS250 demo factory and CMake build.</li>
-            <li>Extended texture loading with RGBA8, RGBA32F, and R32F allocation formats.</li>
-            <li>Added framebuffer support for rendering generated noise into a repeat-wrapped R32F texture.</li>
-            <li>Implemented improved 3D gradient noise in GLSL with quintic fading and fixed gradient directions.</li>
-            <li>Added gradient, fractal sum, turbulence, marble, and wood pattern modes.</li>
-            <li>Built texture and surface shaders so the same generated noise can be inspected as a 2D texture or as
-                displaced terrain.</li>
-        </ul>
+                <section class="imgui-window">
+                    <div class="imgui-title">
+                        <span class="twisty"></span>
+                        <span class="title-tab">Demo Settings</span>
+                        <span class="close">×</span>
+                    </div>
 
-        <h2>Reflection</h2>
-        <p>The biggest difference from value noise is that the random data now influences direction instead of direct
-            color. That makes the transitions smoother and gives the higher-level patterns more natural motion when
-            changing the Z slice or tiling scale.</p>
-    </div>
+                    <div class="settings">
+                        <div class="row">
+                            <div class="value-cell text select-cell">
+                                <span id="sizeLabel">1024</span>
+                                <select id="textureSize">
+                                    <option>1024</option>
+                                    <option>512</option>
+                                    <option>256</option>
+                                    <option>128</option>
+                                </select>
+                            </div>
+                            <div class="label">Texture Dimensions</div>
+                        </div>
 
-    <div class="portfolio-item-individual">
-        <h2>Live Demo</h2>
-        <div class="demo-shell">
-            <iframe class="embedded-demo" src="web-release/graphics_fun.html?start=gradientnoise"
-                title="Gradient Noise Demo"></iframe>
+                        <div class="row">
+                            <div class="value-cell range-cell" data-control="tiling">
+                                <div class="fill"></div>
+                                <div class="thumb"></div>
+                                <input id="tiling" type="range" min="0.1" max="3" step="0.01" value="0.25">
+                                <span class="numeric" id="tilingValue">0.250</span>
+                            </div>
+                            <div class="label">Tiling Scale</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="value-cell range-cell" data-control="zInput">
+                                <div class="fill"></div>
+                                <div class="thumb"></div>
+                                <input id="zInput" type="range" min="0" max="64" step="0.01" value="0">
+                                <span class="numeric" id="zValue">0.000</span>
+                            </div>
+                            <div class="label">Z Input (<span id="zParen">0.000</span>)</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="value-cell text select-cell">
+                                <span id="viewLabel">Surface</span>
+                                <select id="viewNoise">
+                                    <option>Texture</option>
+                                    <option selected>Surface</option>
+                                </select>
+                            </div>
+                            <div class="label">View Noise</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="value-cell text select-cell">
+                                <span id="patternLabel">Gradient</span>
+                                <select id="pattern">
+                                    <option value="gradient">Gradient</option>
+                                    <option value="fractal">Fractal Sum</option>
+                                    <option value="turbulence">Turbulence</option>
+                                    <option value="marble">Marble</option>
+                                    <option value="wood">Wood</option>
+                                </select>
+                            </div>
+                            <div class="label">Pattern Type</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="value-cell range-cell" data-control="areaScale">
+                                <div class="fill"></div>
+                                <div class="thumb"></div>
+                                <input id="areaScale" type="range" min="1" max="100" step="0.1" value="10">
+                                <span class="numeric" id="areaValue">10.000</span>
+                            </div>
+                            <div class="label">Area Scale</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="value-cell range-cell" data-control="heightScale">
+                                <div class="fill"></div>
+                                <div class="thumb"></div>
+                                <input id="heightScale" type="range" min="0.01" max="10" step="0.01" value="1">
+                                <span class="numeric" id="heightValue">1.000</span>
+                            </div>
+                            <div class="label">Height Scale</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="value-cell range-cell" data-control="stacks">
+                                <div class="fill"></div>
+                                <div class="thumb"></div>
+                                <input id="stacks" type="range" min="1" max="500" step="1" value="200">
+                                <span class="numeric" id="stacksValue">200</span>
+                            </div>
+                            <div class="label">Stacks</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="value-cell range-cell" data-control="slices">
+                                <div class="fill"></div>
+                                <div class="thumb"></div>
+                                <input id="slices" type="range" min="1" max="500" step="1" value="200">
+                                <span class="numeric" id="slicesValue">200</span>
+                            </div>
+                            <div class="label">Slices</div>
+                        </div>
+
+                        <div class="portfolio-drawer">
+                            <h2>Project Overview</h2>
+                            <p>3D gradient noise rendered as a texture and displaced terrain surface.</p>
+                            <h2>Tasks Completed</h2>
+                            <ul>
+                                <li>Periodic gradient noise with quintic smoothing.</li>
+                                <li>Gradient, fractal, turbulence, marble, and wood modes.</li>
+                                <li>Single-file portfolio version with CS250-style controls.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </aside>
+        </div>
+
+        <div id="description" align="center" hidden>
+            <h2>DigiPen Korea Graphics II</h2>
+            <div id="container_status" align="center" style="color: rgb(0, 255, 0);">Gradient Noise module initialized successfully!</div>
         </div>
     </div>
 
-    <footer class="footer">
-        <a href="mailto:junseok@digipen.edu" class="footer__link">junseok@digipen.edu</a>
-        <ul class="social-list">
-            <li class="social-list__item"><a class="social-list__link" href="https://linkedin.com/in/junseok"
-                    aria-label="LinkedIn profile"><i class="fab fa-linkedin"></i></a></li>
-            <li class="social-list__item"><a class="social-list__link" href="https://github.com/junseok"
-                    aria-label="GitHub profile"><i class="fab fa-github"></i></a></li>
-        </ul>
-    </footer>
+    <script>
+        "use strict";
 
-    <script src="../js/index.js"></script>
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d", { alpha: false });
+
+        const controls = {
+            textureSize: document.getElementById("textureSize"),
+            sizeLabel: document.getElementById("sizeLabel"),
+            tiling: document.getElementById("tiling"),
+            tilingValue: document.getElementById("tilingValue"),
+            zInput: document.getElementById("zInput"),
+            zValue: document.getElementById("zValue"),
+            zParen: document.getElementById("zParen"),
+            viewNoise: document.getElementById("viewNoise"),
+            viewLabel: document.getElementById("viewLabel"),
+            pattern: document.getElementById("pattern"),
+            patternLabel: document.getElementById("patternLabel"),
+            areaScale: document.getElementById("areaScale"),
+            areaValue: document.getElementById("areaValue"),
+            heightScale: document.getElementById("heightScale"),
+            heightValue: document.getElementById("heightValue"),
+            stacks: document.getElementById("stacks"),
+            stacksValue: document.getElementById("stacksValue"),
+            slices: document.getElementById("slices"),
+            slicesValue: document.getElementById("slicesValue"),
+            fpsText: document.getElementById("fpsText")
+        };
+
+        const PERIOD = 64;
+        const SAMPLE_SIZE = 192;
+        const PERMUTATION = [
+            17, 33, 14, 52, 24, 36, 46, 48, 26, 7, 45, 57, 59, 2, 42, 61,
+            9, 3, 12, 63, 37, 53, 17, 8, 4, 35, 38, 22, 6, 18, 68, 55,
+            31, 11, 21, 5, 27, 25, 35, 28, 32, 45, 41, 10, 71, 58, 62, 11,
+            13, 29, 34, 50, 8, 1, 29, 10, 16, 4, 15, 56, 18, 39, 56, 61,
+            17, 33, 14, 52, 24, 36, 46, 48, 26, 7, 45, 57, 59, 2, 42, 61,
+            9, 3, 12, 63, 37, 53, 17, 8, 4, 35, 38, 22, 6, 18, 68, 55,
+            31, 11, 21, 5, 27, 25, 35, 28, 32, 45, 41, 10, 71, 58, 62, 11,
+            13, 29, 34, 50, 8, 1, 29, 10, 16, 4, 15, 56, 18, 39, 56, 61
+        ];
+        const GRADIENTS = [
+            [1, 1, 0], [-1, 1, 0], [1, -1, 0], [-1, -1, 0],
+            [1, 0, 1], [-1, 0, 1], [1, 0, -1], [-1, 0, -1],
+            [0, 1, 1], [0, -1, 1], [0, 1, -1], [0, -1, -1]
+        ].map((g) => {
+            const len = Math.hypot(g[0], g[1], g[2]);
+            return [g[0] / len, g[1] / len, g[2] / len];
+        });
+
+        const noiseCanvas = document.createElement("canvas");
+        const noiseCtx = noiseCanvas.getContext("2d", { alpha: false });
+        let noiseValues = new Float32Array(SAMPLE_SIZE * SAMPLE_SIZE);
+        let needsTexture = true;
+        let lastFrameTime = performance.now();
+
+        function updateWindowSize() {
+            const rect = canvas.getBoundingClientRect();
+            const ratio = Math.min(window.devicePixelRatio || 1, 2);
+            const width = Math.max(1, Math.floor(rect.width * ratio));
+            const height = Math.max(1, Math.floor(rect.height * ratio));
+            if (canvas.width !== width || canvas.height !== height) {
+                canvas.width = width;
+                canvas.height = height;
+            }
+        }
+
+        function positiveMod(value, modulus) {
+            const result = value % modulus;
+            return result < 0 ? result + modulus : result;
+        }
+
+        function fade(t) {
+            return t * t * t * (t * (t * 6 - 15) + 10);
+        }
+
+        function mix(a, b, t) {
+            return a + (b - a) * t;
+        }
+
+        function permutation(index) {
+            return PERMUTATION[index & 127];
+        }
+
+        function hashLattice(x, y, z) {
+            const ix = positiveMod(x, PERIOD);
+            const iy = positiveMod(y, PERIOD);
+            const iz = positiveMod(z, PERIOD);
+            return permutation(permutation(permutation(ix) + iy) + iz);
+        }
+
+        function gradientDot(hash, x, y, z) {
+            const g = GRADIENTS[hash % GRADIENTS.length];
+            return g[0] * x + g[1] * y + g[2] * z;
+        }
+
+        function gradientNoise(x, y, z) {
+            const bx = Math.floor(x);
+            const by = Math.floor(y);
+            const bz = Math.floor(z);
+            const lx = x - bx;
+            const ly = y - by;
+            const lz = z - bz;
+            const tx = fade(lx);
+            const ty = fade(ly);
+            const tz = fade(lz);
+
+            const x00 = mix(gradientDot(hashLattice(bx, by, bz), lx, ly, lz), gradientDot(hashLattice(bx + 1, by, bz), lx - 1, ly, lz), tx);
+            const x10 = mix(gradientDot(hashLattice(bx, by + 1, bz), lx, ly - 1, lz), gradientDot(hashLattice(bx + 1, by + 1, bz), lx - 1, ly - 1, lz), tx);
+            const x01 = mix(gradientDot(hashLattice(bx, by, bz + 1), lx, ly, lz - 1), gradientDot(hashLattice(bx + 1, by, bz + 1), lx - 1, ly, lz - 1), tx);
+            const x11 = mix(gradientDot(hashLattice(bx, by + 1, bz + 1), lx, ly - 1, lz - 1), gradientDot(hashLattice(bx + 1, by + 1, bz + 1), lx - 1, ly - 1, lz - 1), tx);
+
+            return mix(mix(x00, x10, ty), mix(x01, x11, ty), tz);
+        }
+
+        function normalizedNoise(x, y, z) {
+            return Math.max(0, Math.min(1, 0.5 + 0.5 * gradientNoise(x, y, z)));
+        }
+
+        function fractalSum(x, y, z) {
+            let result = 0;
+            let amplitude = 0.5;
+            let totalAmplitude = 0;
+            for (let octave = 0; octave < 5; octave += 1) {
+                result += amplitude * normalizedNoise(x, y, z);
+                totalAmplitude += amplitude;
+                x *= 2;
+                y *= 2;
+                z *= 2;
+                amplitude *= 0.5;
+            }
+            return result / totalAmplitude;
+        }
+
+        function turbulence(x, y, z) {
+            let result = 0;
+            let amplitude = 0.5;
+            let totalAmplitude = 0;
+            for (let octave = 0; octave < 5; octave += 1) {
+                result += amplitude * Math.abs(gradientNoise(x, y, z));
+                totalAmplitude += amplitude;
+                x *= 2;
+                y *= 2;
+                z *= 2;
+                amplitude *= 0.5;
+            }
+            return Math.max(0, Math.min(1, 2 * result / totalAmplitude));
+        }
+
+        function samplePattern(x, y, z, pattern) {
+            if (pattern === "fractal") {
+                return fractalSum(x, y, z);
+            }
+            if (pattern === "turbulence") {
+                return turbulence(x, y, z);
+            }
+            if (pattern === "marble") {
+                const nx = x * 0.25;
+                const ny = y * 0.25;
+                const nz = z * 0.25;
+                return 0.5 + 0.5 * Math.sin(Math.PI * (nx + 3 * fractalSum(nx, ny, nz)));
+            }
+            if (pattern === "wood") {
+                const nx = x * 0.2;
+                const ny = y * 0.2;
+                const nz = z * 0.2;
+                const rings = Math.hypot(nx, ny) + 0.25 * fractalSum(nx * 1.75, ny * 1.75, nz * 1.75);
+                return rings * 8 - Math.floor(rings * 8);
+            }
+            return normalizedNoise(x, y, z);
+        }
+
+        function generateTexture() {
+            const scale = Number(controls.tiling.value);
+            const z = Number(controls.zInput.value);
+            const pattern = controls.pattern.value;
+            noiseCanvas.width = SAMPLE_SIZE;
+            noiseCanvas.height = SAMPLE_SIZE;
+            noiseValues = new Float32Array(SAMPLE_SIZE * SAMPLE_SIZE);
+
+            const image = noiseCtx.createImageData(SAMPLE_SIZE, SAMPLE_SIZE);
+            const data = image.data;
+            for (let y = 0; y < SAMPLE_SIZE; y += 1) {
+                for (let x = 0; x < SAMPLE_SIZE; x += 1) {
+                    const sx = x / SAMPLE_SIZE * PERIOD * scale;
+                    const sy = y / SAMPLE_SIZE * PERIOD * scale;
+                    const value = samplePattern(sx, sy, z, pattern);
+                    const index = y * SAMPLE_SIZE + x;
+                    const shade = Math.round(value * 255);
+                    noiseValues[index] = value;
+                    data[index * 4] = shade;
+                    data[index * 4 + 1] = shade;
+                    data[index * 4 + 2] = shade;
+                    data[index * 4 + 3] = 255;
+                }
+            }
+            noiseCtx.putImageData(image, 0, 0);
+            needsTexture = false;
+        }
+
+        function getNoiseValue(x, y) {
+            const px = positiveMod(Math.round(x * (SAMPLE_SIZE - 1)), SAMPLE_SIZE);
+            const py = positiveMod(Math.round(y * (SAMPLE_SIZE - 1)), SAMPLE_SIZE);
+            return noiseValues[py * SAMPLE_SIZE + px] || 0;
+        }
+
+        function project(ix, iy, cols, rows) {
+            const nx = ix / cols;
+            const ny = iy / rows;
+            const worldX = nx - 0.5;
+            const worldY = ny - 0.5;
+            const height = getNoiseValue(nx, ny) - 0.5;
+            const area = Number(controls.areaScale.value);
+            const hScale = Number(controls.heightScale.value);
+            const width = canvas.width * Math.min(1.05, 0.78 + area * 0.004);
+            const depth = canvas.height * 0.72;
+            const originX = canvas.width * 0.51;
+            const originY = canvas.height * 0.67;
+
+            return {
+                x: originX + (worldX - worldY) * width * 0.74,
+                y: originY + (worldX + worldY) * depth * 0.48 - height * canvas.height * 0.19 * hScale,
+                h: height
+            };
+        }
+
+        function shadeQuad(a, b, c, d) {
+            const center = (a.h + b.h + c.h + d.h) * 0.25;
+            const dx = (b.h + d.h) - (a.h + c.h);
+            const dy = (c.h + d.h) - (a.h + b.h);
+            const light = Math.max(0, Math.min(1, 0.62 + center * 0.45 - dx * 1.75 - dy * 1.15));
+            const gray = Math.round(78 + light * 172);
+            return `rgb(${gray}, ${gray}, ${gray})`;
+        }
+
+        function drawSurfaceView() {
+            ctx.fillStyle = "#6495ed";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const cols = 70;
+            const rows = 70;
+            for (let y = rows - 1; y >= 0; y -= 1) {
+                for (let x = 0; x < cols; x += 1) {
+                    const a = project(x, y, cols, rows);
+                    const b = project(x + 1, y, cols, rows);
+                    const c = project(x, y + 1, cols, rows);
+                    const d = project(x + 1, y + 1, cols, rows);
+                    ctx.beginPath();
+                    ctx.moveTo(a.x, a.y);
+                    ctx.lineTo(b.x, b.y);
+                    ctx.lineTo(d.x, d.y);
+                    ctx.lineTo(c.x, c.y);
+                    ctx.closePath();
+                    ctx.fillStyle = shadeQuad(a, b, c, d);
+                    ctx.fill();
+                }
+            }
+        }
+
+        function drawTextureView() {
+            ctx.fillStyle = "#6495ed";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.imageSmoothingEnabled = false;
+            const side = Math.min(canvas.width, canvas.height) * 0.82;
+            ctx.drawImage(noiseCanvas, (canvas.width - side) * 0.5, (canvas.height - side) * 0.5, side, side);
+        }
+
+        function updateRangeVisual(input) {
+            const cell = input.closest(".range-cell");
+            const min = Number(input.min);
+            const max = Number(input.max);
+            const value = Number(input.value);
+            const t = (value - min) / (max - min);
+            cell.querySelector(".fill").style.width = `${Math.max(0, Math.min(1, t)) * 100}%`;
+            cell.querySelector(".thumb").style.left = `calc(${Math.max(0, Math.min(1, t)) * 100}% - 8px)`;
+        }
+
+        function updateUi() {
+            controls.sizeLabel.textContent = controls.textureSize.value;
+            controls.tilingValue.textContent = Number(controls.tiling.value).toFixed(3);
+            controls.zValue.textContent = Number(controls.zInput.value).toFixed(3);
+            controls.zParen.textContent = Number(controls.zInput.value).toFixed(3);
+            controls.viewLabel.textContent = controls.viewNoise.value;
+            controls.patternLabel.textContent = controls.pattern.options[controls.pattern.selectedIndex].text;
+            controls.areaValue.textContent = Number(controls.areaScale.value).toFixed(3);
+            controls.heightValue.textContent = Number(controls.heightScale.value).toFixed(3);
+            controls.stacksValue.textContent = controls.stacks.value;
+            controls.slicesValue.textContent = controls.slices.value;
+            for (const input of document.querySelectorAll(".range-cell input")) {
+                updateRangeVisual(input);
+            }
+        }
+
+        function draw() {
+            updateWindowSize();
+            updateUi();
+            if (needsTexture) {
+                generateTexture();
+            }
+            if (controls.viewNoise.value === "Texture") {
+                drawTextureView();
+            } else {
+                drawSurfaceView();
+            }
+
+            const now = performance.now();
+            const fps = Math.round(1000 / Math.max(1, now - lastFrameTime));
+            lastFrameTime = now;
+            controls.fpsText.textContent = String(Math.max(1, Math.min(999, fps)));
+        }
+
+        function requestDraw() {
+            needsTexture = true;
+            requestAnimationFrame(draw);
+        }
+
+        function onkeydown(event) {
+            if (!event.ctrlKey && (event.keyCode === 8 || event.keyCode === 9 || event.keyCode === 46 || event.keyCode >= 37 && event.keyCode <= 40)) {
+                event.preventDefault();
+            }
+        }
+
+        for (const element of [controls.textureSize, controls.tiling, controls.zInput, controls.viewNoise, controls.pattern, controls.areaScale, controls.heightScale, controls.stacks, controls.slices]) {
+            element.addEventListener("input", requestDraw);
+            element.addEventListener("change", requestDraw);
+        }
+
+        window.addEventListener("keydown", onkeydown, true);
+        window.addEventListener("resize", () => requestAnimationFrame(draw));
+        window.addEventListener("load", draw);
+        draw();
+    </script>
 </body>
-
 </html>

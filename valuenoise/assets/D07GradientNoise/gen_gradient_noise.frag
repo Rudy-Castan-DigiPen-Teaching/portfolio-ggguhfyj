@@ -52,9 +52,9 @@ float gradient_dot(int hash, vec3 offset)
 
 int hash_lattice(ivec3 cell)
 {
-    const int x = positive_mod(cell.x, PERIOD);
-    const int y = positive_mod(cell.y, PERIOD);
-    const int z = positive_mod(cell.z, PERIOD);
+    int x = positive_mod(cell.x, PERIOD);
+    int y = positive_mod(cell.y, PERIOD);
+    int z = positive_mod(cell.z, PERIOD);
     return permutation(permutation(permutation(x) + y) + z);
 }
 
